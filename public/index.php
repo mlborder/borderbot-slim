@@ -9,12 +9,19 @@ if (PHP_SAPI == 'cli-server') {
 }
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/j4mie/idiorm/idiorm.php';
 
 session_start();
 
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
+
+ORM::configure([
+    'connection_string' => sprintf('mysql:host=%s;dbname=%s;port=%d', getenv('SLIM_DB_HOST'), getenv('SLIM_DB_NAME'), getenv('SLIM_DB_PORT')),
+    'username' => getenv('SLIM_DB_USER'),
+    'password' => getenv('SLIM_DB_PASS')
+]);
 
 // Set up dependencies
 require __DIR__ . '/../src/dependencies.php';
