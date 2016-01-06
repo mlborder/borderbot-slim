@@ -67,3 +67,9 @@ $app->get('/players/{id}/records', function ($request, $response, $args) use ($a
     $response->write(json_encode($ret));
     return $response->withHeader('Content-type', 'application/json');
 });
+
+// Return dummy response
+$app->get('/[{name}]', function ($request, $response, $args) {
+    $response->write(json_encode(['status' => 'Not Found']));
+    return $response->withStatus(404)->withHeader('Content-type', 'application/json');
+});
