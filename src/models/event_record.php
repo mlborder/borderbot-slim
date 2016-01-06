@@ -23,13 +23,13 @@ class EventRecord
                 ->where('event_id', intval($event_id))
                 ->where('idol_id', intval($idol_id))
                 ->offset($offset)->limit($limit)
-                ->order_by_asc('rank')->find_many();
+                ->order_by_desc('point')->order_by_asc('rank')->find_many();
             return self::convert_results($results);
         } else {
             $results = ORM::for_table(SLIM_DB_TABLE)
                 ->where('event_id', intval($event_id))
                 ->offset($offset)->limit($limit)
-                ->order_by_asc('idol_id')->order_by_asc('rank')->find_many();
+                ->order_by_desc('point')->order_by_asc('rank')->find_many();
             return self::convert_results($results);
         }
     }
