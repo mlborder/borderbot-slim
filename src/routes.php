@@ -1,4 +1,6 @@
 <?php
+define('SLIM_DB_TABLE', 'event_records');
+
 // Find by event_id
 $app->get('/events/{id}/records', function($request, $response, $args) {
     $event_id = intval($args['id']);
@@ -6,14 +8,14 @@ $app->get('/events/{id}/records', function($request, $response, $args) {
 
     if (isset($params['idol_id'])) {
         $idol_id = intval($params['idol_id']);
-        $results = ORM::for_table('event_results')
+        $results = ORM::for_table(SLIM_DB_TABLE)
             ->where('event_id', $event_id)
             ->where('idol_id', $idol_id)
             ->order_by_asc('rank')
             ->limit(5000)
             ->find_many();
     } else {
-        $results = ORM::for_table('event_results')
+        $results = ORM::for_table(SLIM_DB_TABLE)
             ->where('event_id', $event_id)
             ->order_by_asc('idol_id')
             ->order_by_asc('rank')
@@ -46,7 +48,7 @@ $app->get('/players/{id}', function ($request, $response, $args) use ($app){
 
 // Find by player_id
 $app->get('/players/{id}/records', function ($request, $response, $args) use ($app){
-    $results = ORM::for_table('event_results')
+    $results = ORM::for_table(SLIM_DB_TABLE)
         ->where('player_id', $args['id'])
         ->order_by_asc('event_id')
         ->find_many();
