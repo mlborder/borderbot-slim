@@ -22,6 +22,7 @@ class EventRecord
             $results = ORM::for_table(SLIM_DB_TABLE)
                 ->where('event_id', intval($event_id))
                 ->where('idol_id', intval($idol_id))
+                ->left_outer_join('players', array(SLIM_DB_TABLE . '.player_id', '=', 'players.id'))
                 ->offset($offset)->limit($limit)
                 ->order_by_desc('point')->order_by_asc('rank')->find_many();
             return self::convert_results($results);
@@ -29,6 +30,7 @@ class EventRecord
             $results = ORM::for_table(SLIM_DB_TABLE)
                 ->where('event_id', intval($event_id))
                 ->offset($offset)->limit($limit)
+                ->left_outer_join('players', array(SLIM_DB_TABLE . '.player_id', '=', 'players.id'))
                 ->order_by_desc('point')->order_by_asc('rank')->find_many();
             return self::convert_results($results);
         }
@@ -63,6 +65,7 @@ class EventRecord
         foreach ($results as $result) {
             array_push($ret, [
                 'id' => $result->id,
+                'name' => $result->name,
                 'event_id' => $result->event_id,
                 'idol_id' => $result->idol_id,
                 'rank' => $result->rank,
