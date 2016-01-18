@@ -11,6 +11,7 @@ if (PHP_SAPI == 'cli-server') {
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../vendor/j4mie/idiorm/idiorm.php';
 
+ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 session_start();
 
 // Instantiate the app
