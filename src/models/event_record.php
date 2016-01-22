@@ -47,7 +47,7 @@ class EventRecord
         $results = ORM::for_table(SLIM_DB_TABLE)
             ->where('player_id', $player_id)
             ->offset($offset)->limit($limit)
-            ->order_by_asc('event_id')->find_many();
+            ->order_by_desc('event_id')->find_many();
         return self::convert_results($results);
     }
 
