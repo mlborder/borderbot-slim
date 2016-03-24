@@ -1,7 +1,4 @@
 <?php
-require __DIR__ . '/models/event_record.php';
-require __DIR__ . '/models/player.php';
-
 // Find by event_id
 $app->get('/events/{id}/records', function($request, $response, $args) {
     $params = $request->getQueryParams();
