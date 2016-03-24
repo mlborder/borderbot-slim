@@ -1,4 +1,22 @@
 <?php
+$app->get('/weeks/{id}', function($request, $response, $args) {
+    $response->write(json_encode(['id' => $args['id']], JSON_UNESCAPED_UNICODE));
+    return $response->withHeader('Content-type', 'application/json; charset=utf-8');
+});
+
+$app->get('/weeks/{id}/idol_records', function($request, $response, $args) {
+    $records = WeekRecord::idol_ranking($args['id']);
+    $response->write(json_encode($records, JSON_UNESCAPED_UNICODE));
+    return $response->withHeader('Content-type', 'application/json; charset=utf-8');
+});
+
+$app->get('/weeks/{id}/player_records', function($request, $response, $args) {
+    $params = $request->getQueryParams();
+    $records = WeekRecord::player_ranking($args['id'], $params);
+    $response->write(json_encode($records, JSON_UNESCAPED_UNICODE));
+    return $response->withHeader('Content-type', 'application/json; charset=utf-8');
+});
+
 // Find by event_id
 $app->get('/events/{id}/records', function($request, $response, $args) {
     $params = $request->getQueryParams();

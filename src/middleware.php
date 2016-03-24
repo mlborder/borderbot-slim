@@ -16,3 +16,4 @@ ORM::configure([
 
 require __DIR__ . '/models/event_record.php';
 require __DIR__ . '/models/player.php';
+require __DIR__ . '/models/week_record.php';
