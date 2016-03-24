@@ -1,24 +1,26 @@
 <?php
 class EventRecord
 {
+    const SLIM_DB_TABLE = 'event_records';
+
     public static function for_event($event_id, array $params)
     {
         $idol_id = isset($params['idol_id']) ? $params['idol_id'] : null;
         list($offset, $limit) = self::parse_paging_info($params);
 
         if ($idol_id) {
-            $results = ORM::for_table(SLIM_DB_TABLE)
+            $results = ORM::for_table(self::SLIM_DB_TABLE)
                 ->where('event_id', intval($event_id))
                 ->where('idol_id', intval($idol_id))
-                ->left_outer_join('players', array(SLIM_DB_TABLE . '.player_id', '=', 'players.id'))
+                ->left_outer_join('players', [self::SLIM_DB_TABLE . '.player_id', '=', 'players.id'])
                 ->offset($offset)->limit($limit)
                 ->order_by_desc('point')->order_by_asc('rank')->find_many();
             return self::convert_results($results);
         } else {
-            $results = ORM::for_table(SLIM_DB_TABLE)
+            $results = ORM::for_table(self::SLIM_DB_TABLE)
                 ->where('event_id', intval($event_id))
                 ->offset($offset)->limit($limit)
-                ->left_outer_join('players', array(SLIM_DB_TABLE . '.player_id', '=', 'players.id'))
+                ->left_outer_join('players', [self::SLIM_DB_TABLE . '.player_id', '=', 'players.id'])
                 ->order_by_desc('point')->order_by_asc('rank')->find_many();
             return self::convert_results($results);
         }
@@ -32,7 +34,7 @@ class EventRecord
         }
         list($offset, $limit) = self::parse_paging_info($params);
 
-        $results = ORM::for_table(SLIM_DB_TABLE)
+        $results = ORM::for_table(self::SLIM_DB_TABLE)
             ->where('player_id', $player_id)
             ->offset($offset)->limit($limit)
             ->order_by_desc('event_id')->find_many();
