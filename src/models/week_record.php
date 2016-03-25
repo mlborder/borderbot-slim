@@ -11,12 +11,23 @@ class WeekRecord
             ->group_by('idol_id')
             ->order_by_desc('fan_count')->find_many();
 
+        $player_count_results = ORM::for_table(self::SLIM_DB_TABLE)
+            ->select_many_expr(['idol_id', 'player_count' => 'COUNT(player_id)'])
+            ->where('week_id', intval($week_id))
+            ->group_by('idol_id')->find_many();
+
+        $player_count = [];
+        foreach ($player_count_results as $result) {
+            $player_count[$result->idol_id] = $result->player_count;
+        }
+
         $ret = [];
         foreach ($results as $i => $result) {
             array_push($ret, [
                 'rank' => $i + 1,
                 'idol_id' => $result->idol_id,
                 'fan_count' => $result->fan_count,
+                'player_count' => $player_count[$result->idol_id]
             ]);
         }
 
